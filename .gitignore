@@ -64,3 +64,6 @@ next-env.d.ts
 /.idea/
 /.vscode/
 Thumbs.db
+
+# GitHub Pages generated output
+/dist-pages/

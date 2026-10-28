@@ -35,3 +35,36 @@ pnpm build
 
 تستبعد `.gitignore` أسرار البيئة والملفات المحلية ونتائج البناء وقواعد البيانات المحلية. لا تضع أسرارًا في كود الواجهة؛ `.gitignore` لا يحمي قيمة مكتوبة داخل ملف مصدر متعقّب.
 
+
+## دليل سريع للمبرمج
+
+المشروع واجهة **React 19 + TypeScript**، وليس مجموعة صفحات HTML مكتوبة يدويًا.
+
+| النوع | دوره |
+| --- | --- |
+| `.tsx` | مكونات React والشاشات والتفاعل |
+| `.ts` | أنواع البيانات والمنطق والحسابات |
+| `.css` | التصميم والتجاوب، مع Tailwind CSS |
+| `.json` | الكتالوج وإعدادات المشروع |
+| `.html` | نقطة الدخول لنسخة GitHub Pages؛ بقية الواجهة يولدها React |
+
+التطبيق الأصلي يستخدم Vinext بأسلوب Next.js App Router وإعداد Cloudflare/Sites. نسخة العرض في GitHub Pages تستخدم Vite لبناء نفس المكون `app/experience.tsx` كواجهة ثابتة تعمل في المتصفح؛ لا توجد نسخة تصميم ثانية.
+
+### تشغيل نسخة Pages محليًا
+
+```sh
+pnpm install --frozen-lockfile
+pnpm typecheck
+pnpm build:pages
+pnpm preview:pages
+```
+
+الرابط: http://localhost:4173/familydaystay/
+
+### النشر
+
+الرابط العام: https://mohammedaabakhsh.github.io/familydaystay/
+
+الملف `.github/workflows/pages.yml` يبني وينشر عند تحديث `main`. مصدر Pages في إعدادات المستودع هو GitHub Actions. لا ترفع مجلد `dist-pages` يدويًا؛ ينشأ خلال البناء. لتغيير اسم المستودع عدّل `PAGES_BASE_PATH` في workflow، والقيمة الافتراضية في `vite.pages.config.ts`.
+
+ابدأ من `HANDOFF.md` لمعرفة الوظائف المنفذة ونقاط ربط الخادم. GitHub Pages يشغّل الواجهة الحالية؛ تسجيل الدخول والمخزون الحقيقي والحجز والدفع تحتاج API وخادمًا منفصلًا. لا تعتمد على الأسعار المحسوبة في المتصفح لإتمام دفع فعلي.
