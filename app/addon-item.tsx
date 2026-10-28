@@ -1,0 +1,9 @@
+"use client";
+import { useState } from "react";
+import type { BookingAddon } from "./booking-addons";
+const n=(v:number)=>new Intl.NumberFormat("ar-SA-u-nu-latn").format(v);
+export default function AddonItem({addon:a,chosen,covered,quantity,onToggle,onQuantity}:{addon:BookingAddon;chosen:boolean;covered:boolean;quantity:number;onToggle:()=>void;onQuantity:(n:number)=>void}) {
+ const [count,setCount]=useState(quantity);
+ const changed=chosen&&!!a.quantity&&count!==quantity;
+ return <div className={"extra-row "+(chosen?"chosen":"")}><div className="extra-row-main"><div><strong>{a.title}</strong>{a.description&&<small>{a.description}</small>}<small className="extra-price">{a.price!==undefined?`${n(a.price)} ر.س`:"السعر يُحدد لاحقا"}</small></div>{covered?<span className="included-label">مشمولة في باقتك</span>:!a.quantity&&<button type="button" className={"extra-add "+(chosen?"selected":"")} onClick={onToggle}>{chosen?"إزالة":"إضافة"}</button>}</div>{a.details.length>0&&<details className="extra-details"><summary>التفاصيل</summary><ul>{a.details.map(d=><li key={d}>{d}</li>)}</ul></details>}{a.quantity&&!covered&&<><div className="extra-quantity"><span>الكمية</span><button type="button" aria-label={"تقليل كمية "+a.title} disabled={count<=1} onClick={()=>setCount(count-1)}>−</button><output>{n(count)}</output><button type="button" aria-label={"زيادة كمية "+a.title} onClick={()=>setCount(count+1)}>+</button></div><div className="service-actions"><button type="button" className="extra-add" onClick={()=>{if(chosen&&!changed)onToggle();else{if(!chosen)onToggle();onQuantity(count);}}}>{changed?"تحديث الكمية":chosen?"إزالة":"إضافة"}</button>{chosen&&changed&&<button type="button" className="text-button" onClick={onToggle}>إزالة</button>}{chosen&&<small>المضاف: {n(quantity)}</small>}</div></>}</div>;
+}
